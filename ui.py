@@ -18,11 +18,13 @@ def run_script(script_path):
     # 获取当前 Python 解释器的路径
     python_path = sys.executable
 
-    # 构建运行命令
-    command = f'"{python_path}" -m streamlit run "{script_path}"'
+    if not os.path.isfile(script_path):
+        print(f"脚本不存在：{script_path}")
+        return
 
-    # 执行命令
-    result = subprocess.run(command, shell=True)
+    # 构建运行命令并执行
+    command = [python_path, "-m", "streamlit", "run", script_path]
+    result = subprocess.run(command)
     if result.returncode != 0:
         print("脚本运行出错。")
 
